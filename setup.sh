@@ -3,7 +3,7 @@ set -e
 
 COMFY_HOME="/workspace/runpod-slim/ComfyUI" 
 MODEL_DIR="$COMFY_HOME/models/qwen" 
-MODEL_FILE="$MODEL_DIR/Qwen3-Coder-30B-A3B-Instruct" 
+MODEL_FILE="$MODEL_DIR/Qwen2.5-Coder-14B" 
 
 echo "$MODEL_FILE"
 
@@ -13,7 +13,7 @@ if [ ! -f "$MODEL_FILE" ]; then
     echo "Downloading..."
    
  hf download \
-     Qwen/Qwen3-Coder-30B-A3B-Instruct \
+     Qwen/Qwen2.5-Coder-14B \
      --local-dir "$MODEL_DIR" 
 
 else 
