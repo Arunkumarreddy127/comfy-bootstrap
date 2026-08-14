@@ -1,0 +1,20 @@
+name: qwen-test
+
+description: Qwen coding model with FLUX T5 text encoder
+
+assets:
+
+  - name: qwen2.5-coder-14b
+    type: model
+    provider: huggingface
+    repo: Qwen/Qwen2.5-Coder-14B-Instruct
+    destination: qwen
+    check: config.json
+
+  - name: t5xxl-fp8
+    type: model
+    provider: huggingface
+    repo: comfyanonymous/flux_text_encoders
+    file: t5xxl_fp8_e4m3fn.safetensors
+    destination: clip
+    check: t5xxl_fp8_e4m3fn.safetensors
