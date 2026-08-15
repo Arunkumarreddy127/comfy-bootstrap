@@ -1,9 +1,35 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+ENV_FILE="${ENV_FILE:-$REPO_ROOT/.env}"
+
+if [ -f "$ENV_FILE" ]; then
+    HF_TOKEN_WAS_SET="${HF_TOKEN+x}"
+    CIVITAI_TOKEN_WAS_SET="${CIVITAI_TOKEN+x}"
+    EXISTING_HF_TOKEN="${HF_TOKEN:-}"
+    EXISTING_CIVITAI_TOKEN="${CIVITAI_TOKEN:-}"
+
+    set -a
+    # .env is local configuration and is never committed.
+    . "$ENV_FILE"
+    set +a
+
+    if [ -n "$HF_TOKEN_WAS_SET" ]; then
+        HF_TOKEN="$EXISTING_HF_TOKEN"
+        export HF_TOKEN
+    fi
+
+    if [ -n "$CIVITAI_TOKEN_WAS_SET" ]; then
+        CIVITAI_TOKEN="$EXISTING_CIVITAI_TOKEN"
+        export CIVITAI_TOKEN
+    fi
+fi
+
 COMFY_HOME="${COMFY_HOME:-/workspace/runpod-slim/ComfyUI}"
 
-MANIFEST="$1"
+MANIFEST="${1:-}"
 
 if [ -z "$MANIFEST" ]; then
     echo "ERROR: Manifest is required."
@@ -26,11 +52,6 @@ echo
 # --------------------------------------------------
 # Dependencies
 # --------------------------------------------------
-
-if ! command -v hf >/dev/null 2>&1; then
-    echo "ERROR: Hugging Face CLI (hf) is not installed."
-    exit 1
-fi
 
 if ! command -v yq >/dev/null 2>&1; then
     echo "ERROR: yq is not installed."
@@ -94,11 +115,13 @@ for ((i=0; i<ASSET_COUNT; i++)); do
         continue
     fi
 
-    # ----------------------------------------------
-    # Hugging Face
-    # ----------------------------------------------
+    case "$PROVIDER" in
+    huggingface)
 
-    if [ "$PROVIDER" = "huggingface" ]; then
+        if ! command -v hf >/dev/null 2>&1; then
+            echo "ERROR: Hugging Face CLI (hf) is not installed."
+            exit 1
+        fi
 
         echo "Downloading..."
 
@@ -120,12 +143,49 @@ for ((i=0; i<ASSET_COUNT; i++)); do
         echo "✓ Download completed"
         echo
 
-    else
+        ;;
+
+    civitai)
+
+        if ! command -v curl >/dev/null 2>&1; then
+            echo "ERROR: curl is not installed."
+            exit 1
+        fi
+
+        if [ -z "${CIVITAI_TOKEN:-}" ]; then
+            echo "ERROR: CIVITAI_TOKEN is required for CivitAI assets."
+            exit 1
+        fi
+
+        if [ -z "$REPO" ]; then
+            echo "ERROR: CivitAI assets require a download URL in 'repo'."
+            exit 1
+        fi
+
+        OUTPUT_FILE="${FILE:-$CHECK}"
+        TEMP_FILE="$MODEL_DIR/.${OUTPUT_FILE}.download"
+
+        echo "Downloading..."
+
+        curl --fail --location --retry 3 \
+            -H "Authorization: Bearer $CIVITAI_TOKEN" \
+            "$REPO" \
+            --output "$TEMP_FILE"
+
+        mv "$TEMP_FILE" "$MODEL_DIR/$OUTPUT_FILE"
+
+        echo "✓ Download completed"
+        echo
+
+        ;;
+
+    *)
 
         echo "ERROR: Unsupported provider: $PROVIDER"
         exit 1
 
-    fi
+        ;;
+    esac
 
 done
 

@@ -27,7 +27,7 @@ case "$COMMAND" in
                 -mindepth 1 \
                 -maxdepth 1 \
                 -type d \
-                -printf "  %f\n"
+                -exec basename {} \;
 
             exit 1
         fi
@@ -44,7 +44,7 @@ case "$COMMAND" in
             -mindepth 1 \
             -maxdepth 1 \
             -type d \
-            -printf "  %f\n"
+            -exec basename {} \;
         ;;
 
     *)
