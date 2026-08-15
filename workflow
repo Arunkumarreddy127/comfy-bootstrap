@@ -8,6 +8,11 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "$COMMAND" in
 
+    setup)
+
+        "$REPO_ROOT/setup.sh"
+        ;;
+
     install)
 
         if [ -z "$WORKFLOW_NAME" ]; then
@@ -51,6 +56,7 @@ case "$COMMAND" in
 
         echo "Usage:"
         echo
+        echo "  ./workflow setup"
         echo "  ./workflow install <workflow>"
         echo "  ./workflow list"
         echo

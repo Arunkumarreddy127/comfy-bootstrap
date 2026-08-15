@@ -26,8 +26,17 @@ The installer loads `.env` automatically. You can use another file by setting `E
 ## Usage
 
 ```sh
+./workflow setup
 ./workflow list
 ./workflow install qwen-test
 ```
+
+`./workflow setup` installs `yq` automatically with `apt-get` when it is missing. Run it as root or with sudo on Debian/Ubuntu/RunPod:
+
+```sh
+sudo ./workflow setup
+```
+
+On macOS or other systems without `apt-get`, install `yq` with the system package manager instead.
 
 Each workflow is defined by `workflows/<name>/manifest.yaml`. Hugging Face assets use the repository name in `repo`; CivitAI assets use a CivitAI download URL in `repo` and should provide the destination filename in `file`.
