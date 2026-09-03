@@ -124,6 +124,7 @@ for ((i=0; i<ASSET_COUNT; i++)); do
     DESTINATION=$(yq -r ".assets[$i].destination" "$MANIFEST")
     CHECK=$(yq -r ".assets[$i].check" "$MANIFEST")
     FILE=$(yq -r ".assets[$i].file // \"\"" "$MANIFEST")
+    OUTPUT=$(yq -r ".assets[$i].output // \"\"" "$MANIFEST")
 
     MODEL_DIR="$COMFY_HOME/models/$DESTINATION"
     CHECK_FILE="$MODEL_DIR/$CHECK"
@@ -178,6 +179,11 @@ for ((i=0; i<ASSET_COUNT; i++)); do
                 "$REPO" \
                 "$FILE" \
                 --local-dir "$MODEL_DIR"
+
+            if [ -n "$OUTPUT" ]; then
+                mv "$MODEL_DIR/$FILE" "$MODEL_DIR/$OUTPUT"
+                rmdir -p "$(dirname "$MODEL_DIR/$FILE")" 2>/dev/null || true
+            fi
 
         else
 

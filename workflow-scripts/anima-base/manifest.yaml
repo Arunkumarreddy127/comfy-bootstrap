@@ -1,0 +1,31 @@
+name: anima-base
+
+description: Anima Base v1.0 text-to-image workflow
+
+assets:
+  - name: anima-base-v1.0
+    type: model
+    provider: huggingface
+    repo: circlestone-labs/Anima
+    file: split_files/diffusion_models/anima-base-v1.0.safetensors
+    output: anima-base-v1.0.safetensors
+    destination: diffusion_models/anima
+    check: anima-base-v1.0.safetensors
+
+  - name: qwen-3-06b-base
+    type: model
+    provider: huggingface
+    repo: circlestone-labs/Anima
+    file: split_files/text_encoders/qwen_3_06b_base.safetensors
+    output: qwen_3_06b_base.safetensors
+    destination: text_encoders
+    check: qwen_3_06b_base.safetensors
+
+  - name: qwen-image-vae
+    type: model
+    provider: huggingface
+    repo: circlestone-labs/Anima
+    file: split_files/vae/qwen_image_vae.safetensors
+    output: qwen_image_vae.safetensors
+    destination: vae
+    check: qwen_image_vae.safetensors
