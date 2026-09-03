@@ -45,3 +45,26 @@ sudo ./workflow setup
 On macOS or other systems without `apt-get`, install `yq` with the system package manager instead.
 
 Each workflow script is defined by `workflow-scripts/<name>/manifest.yaml`. The ComfyUI workflow JSON files are in `workflows/`. Hugging Face assets use the repository name in `repo`; CivitAI assets use a CivitAI download URL in `repo` and should provide the destination filename in `file`.
+
+Custom nodes can also be installed through the same manifest flow. Use `type: custom_node` and a git URL in `repo`:
+
+```yaml
+name: qwen3-tts
+
+description: Qwen3-TTS custom nodes
+
+assets:
+  - name: qwen3-tts
+    type: custom_node
+    provider: git
+    repo: https://github.com/flybirdxx/ComfyUI-Qwen-TTS.git
+    check: ComfyUI-Qwen-TTS
+
+  - name: comfyui-easy-use
+    type: custom_node
+    provider: git
+    repo: https://github.com/your-org/ComfyUI-Easy-Use.git
+    check: ComfyUI-Easy-Use
+```
+
+The installer clones each repo into `COMFY_HOME/custom_nodes` and skips it if the target folder already exists. This makes it easy to add custom-node workflows alongside the existing model bootstrap logic.

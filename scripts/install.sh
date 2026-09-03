@@ -80,6 +80,39 @@ echo
 # Install assets
 # --------------------------------------------------
 
+install_custom_node() {
+    local repo="$1"
+    local repo_name="${2:-}"
+    local target_dir="$COMFY_HOME/custom_nodes"
+
+    if [ -z "$repo" ]; then
+        echo "ERROR: custom_node assets require a git repository in 'repo'."
+        exit 1
+    fi
+
+    if ! command -v git >/dev/null 2>&1; then
+        echo "ERROR: git is not installed."
+        exit 1
+    fi
+
+    mkdir -p "$target_dir"
+
+    if [ -z "$repo_name" ]; then
+        repo_name="$(basename "$repo" .git)"
+    fi
+
+    local install_path="$target_dir/$repo_name"
+
+    if [ -d "$install_path" ]; then
+        echo "✓ Already exists"
+        return 0
+    fi
+
+    echo "Cloning custom node..."
+    git clone --depth 1 "$repo" "$install_path"
+    echo "✓ Custom node installed"
+}
+
 ASSET_COUNT=$(yq '.assets | length' "$MANIFEST")
 
 for ((i=0; i<ASSET_COUNT; i++)); do
@@ -100,8 +133,22 @@ for ((i=0; i<ASSET_COUNT; i++)); do
     echo "Type:        $TYPE"
     echo "Provider:    $PROVIDER"
     echo "Repository:  $REPO"
-    echo "Destination: $MODEL_DIR"
+    if [ -n "$DESTINATION" ] && [ "$DESTINATION" != "null" ]; then
+        echo "Destination: $MODEL_DIR"
+    fi
     echo "----------------------------------------"
+
+    if [ "$TYPE" = "custom_node" ] || [ "$PROVIDER" = "git" ]; then
+        TARGET_NAME="${CHECK:-${FILE:-$(basename "$REPO" .git)}}"
+        if [ -d "$COMFY_HOME/custom_nodes/$TARGET_NAME" ]; then
+            echo "✓ Already exists"
+            echo
+            continue
+        fi
+        install_custom_node "$REPO" "$TARGET_NAME"
+        echo
+        continue
+    fi
 
     mkdir -p "$MODEL_DIR"
 
