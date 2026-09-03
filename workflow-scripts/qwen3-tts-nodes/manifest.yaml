@@ -12,11 +12,11 @@ assets:
   - name: comfyui-easy-use
     type: custom_node
     provider: git
-    repo: https://github.com/Comfy-Org/ComfyUI_EasyUse.git
-    check: ComfyUI_EasyUse
+    repo: https://github.com/yolain/ComfyUI-Easy-Use.git
+    check: ComfyUI-Easy-Use
 
   - name: comfyui-layerstyle
     type: custom_node
     provider: git
-    repo: https://github.com/Acly/ComfyUI-LayerStyle.git
-    check: ComfyUI-LayerStyle
+    repo: https://github.com/chflame163/ComfyUI_LayerStyle.git
+    check: ComfyUI_LayerStyle

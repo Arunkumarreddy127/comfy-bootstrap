@@ -63,7 +63,7 @@ assets:
   - name: comfyui-easy-use
     type: custom_node
     provider: git
-    repo: https://github.com/your-org/ComfyUI-Easy-Use.git
+    repo: https://github.com/yolain/ComfyUI-Easy-Use.git
     check: ComfyUI-Easy-Use
 ```
 
