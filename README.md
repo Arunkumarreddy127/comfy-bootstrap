@@ -9,11 +9,15 @@ Bootstrap model assets into a ComfyUI installation from Hugging Face or CivitAI.
 - `curl` for CivitAI assets
 - Access to a ComfyUI installation
 
-Set `COMFY_HOME` when ComfyUI is not at the default path:
+Select the ComfyUI installation used by the installer:
 
 ```sh
-export COMFY_HOME=/workspace/runpod-slim/ComfyUI
+./workflow set local
+./workflow set contabo
+./workflow set runpod
 ```
+
+These set `COMFY_HOME` to `/test-downloads`, `/root/contabo/ComfyUI`, or `/workspace/runpod-slim/ComfyUI`, respectively. The selection is saved in `.env` and used by future installs.
 
 Credentials can be loaded from a local `.env` file. Copy `.env.example` to `.env` and fill in the tokens. The `.env` file is ignored by Git and must not be committed:
 
@@ -27,6 +31,7 @@ The installer loads `.env` automatically. You can use another file by setting `E
 
 ```sh
 ./workflow setup
+./workflow set runpod
 ./workflow list
 ./workflow install qwen-test
 ```
@@ -39,4 +44,4 @@ sudo ./workflow setup
 
 On macOS or other systems without `apt-get`, install `yq` with the system package manager instead.
 
-Each workflow is defined by `workflows/<name>/manifest.yaml`. Hugging Face assets use the repository name in `repo`; CivitAI assets use a CivitAI download URL in `repo` and should provide the destination filename in `file`.
+Each workflow script is defined by `workflow-scripts/<name>/manifest.yaml`. The ComfyUI workflow JSON files are in `workflows/`. Hugging Face assets use the repository name in `repo`; CivitAI assets use a CivitAI download URL in `repo` and should provide the destination filename in `file`.

@@ -1,0 +1,20 @@
+name: z-image-turbo-fp8-aio-lora
+
+description: Z-Image Turbo FP8 AIO checkpoint with Pixaroma LoRA
+
+assets:
+  - name: z-image-turbo-fp8-aio
+    type: model
+    provider: huggingface
+    repo: SeeSee21/Z-Image-Turbo-AIO
+    file: z-image-turbo-fp8-aio.safetensors
+    destination: checkpoints/z-image
+    check: z-image-turbo-fp8-aio.safetensors
+
+  - name: pixag1rlwh1t3
+    type: lora
+    provider: huggingface
+    repo: Pixaroma/experimental_loras
+    file: pixag1rlwh1t3.safetensors
+    destination: loras/zimage
+    check: pixag1rlwh1t3.safetensors

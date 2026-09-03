@@ -1,0 +1,12 @@
+name: simple-image
+
+description: DreamShaper XL image generation checkpoint
+
+assets:
+  - name: dreamshaper-xl
+    type: model
+    provider: huggingface
+    repo: Lykon/DreamShaper
+    file: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
+    destination: checkpoints
+    check: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
