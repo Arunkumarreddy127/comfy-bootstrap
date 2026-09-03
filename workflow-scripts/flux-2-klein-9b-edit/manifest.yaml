@@ -1,0 +1,30 @@
+name: flux-2-klein-9b-edit
+
+description: FLUX.2 Klein 9B KV FP8 two-image edit workflow
+
+assets:
+  - name: flux-2-klein-9b-kv-fp8
+    type: model
+    provider: huggingface
+    repo: black-forest-labs/FLUX.2-klein-9b-kv-fp8
+    file: flux-2-klein-9b-kv-fp8.safetensors
+    destination: diffusion_models/flux2
+    check: flux-2-klein-9b-kv-fp8.safetensors
+
+  - name: qwen-3-8b-fp8mixed
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/flux2-klein-9B
+    file: split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors
+    output: qwen_3_8b_fp8mixed.safetensors
+    destination: text_encoders
+    check: qwen_3_8b_fp8mixed.safetensors
+
+  - name: flux2-vae
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/flux2-dev
+    file: split_files/vae/flux2-vae.safetensors
+    output: flux2-vae.safetensors
+    destination: vae
+    check: flux2-vae.safetensors
