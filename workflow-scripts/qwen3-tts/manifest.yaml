@@ -1,6 +1,9 @@
-name: qwen3-tts-nodes
+name: qwen3-tts
 
 description: Qwen3 TTS custom nodes for voice synthesis, voice design, and dialogue workflows
+
+models:
+  - qwen3-tts
 
 custom_nodes:
   - qwen3-tts

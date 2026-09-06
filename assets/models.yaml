@@ -29,6 +29,12 @@ models:
     repo: Qwen/Qwen2.5-Coder-14B-Instruct
     destination: qwen
     check: config.json
+  - name: qwen3-tts
+    type: model
+    provider: huggingface
+    repo: Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign
+    destination: qwen-tts
+    check: Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/config.json
   - name: t5xxl-fp8
     type: model
     provider: huggingface
