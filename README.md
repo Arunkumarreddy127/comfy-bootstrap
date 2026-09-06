@@ -1,15 +1,38 @@
 # comfy-bootstrap
 
-Bootstrap model assets into a ComfyUI installation from Hugging Face or CivitAI.
+Install ComfyUI models and custom nodes from reusable catalogs, or install all
+assets required by a workflow.
 
 ## Requirements
 
+- A ComfyUI installation
 - `yq`
 - Hugging Face CLI (`hf`) for Hugging Face assets
 - `curl` for CivitAI assets
-- Access to a ComfyUI installation
+- `git` for custom nodes
 
-Select the ComfyUI installation used by the installer:
+Install `yq` with your platform's package manager. For example:
+
+```sh
+# macOS
+brew install yq
+
+# Debian or Ubuntu
+sudo apt-get update
+sudo apt-get install -y yq
+```
+
+The repository's setup helper installs `yq` on Debian-based systems:
+
+```sh
+sudo ./workflow setup
+```
+
+On macOS, use Homebrew or another system package manager instead.
+
+## Configure the target
+
+Choose where assets should be installed:
 
 ```sh
 ./workflow set local
@@ -17,54 +40,169 @@ Select the ComfyUI installation used by the installer:
 ./workflow set runpod
 ```
 
-These set `COMFY_HOME` to `/test-downloads`, `/root/contabo/ComfyUI`, or `/workspace/runpod-slim/ComfyUI`, respectively. The selection is saved in `.env` and used by future installs.
+The target paths are:
 
-Credentials can be loaded from a local `.env` file. Copy `.env.example` to `.env` and fill in the tokens. The `.env` file is ignored by Git and must not be committed:
+| Target    | `COMFY_HOME`                     |
+| --------- | -------------------------------- |
+| `local`   | `/test-downloads`                |
+| `contabo` | `/root/contabo/ComfyUI`          |
+| `runpod`  | `/workspace/runpod-slim/ComfyUI` |
+
+The selected value is saved in `.env` and used by later installs.
+
+## Credentials
+
+Copy the example environment file when credentials are needed:
 
 ```sh
 cp .env.example .env
 ```
 
-The installer loads `.env` automatically. You can use another file by setting `ENV_FILE=/path/to/file.env`. Explicit `HF_TOKEN` or `CIVITAI_TOKEN` environment variables take precedence over values in `.env`. The Hugging Face CLI also supports its normal login configuration. `CIVITAI_TOKEN` is required only when installing a CivitAI asset.
-
-## Usage
+The installer loads `.env` automatically. You can use a different file with
+`ENV_FILE`:
 
 ```sh
-./workflow setup
-./workflow set runpod
+ENV_FILE=/path/to/file.env ./workflow install <workflow>
+```
+
+`HF_TOKEN` may be provided through the environment or the Hugging Face CLI's
+normal login configuration. `CIVITAI_TOKEN` is required for CivitAI downloads.
+Explicit environment variables take precedence over values from `.env`.
+
+## Workflows
+
+List available workflow manifests with their copyable install commands:
+
+```sh
 ./workflow list
-./workflow install qwen-test
 ```
 
-`./workflow setup` installs `yq` automatically with `apt-get` when it is missing. Run it as root or with sudo on Debian/Ubuntu/RunPod:
+Each workflow is printed beside a command in this form:
+
+```text
+minimax-h3    ./workflow install minimax-h3
+```
+
+Install one workflow and all of its referenced models and custom nodes:
 
 ```sh
-sudo ./workflow setup
+./workflow install minimax-h3
 ```
 
-On macOS or other systems without `apt-get`, install `yq` with the system package manager instead.
-
-Each workflow script is defined by `workflow-scripts/<name>/manifest.yaml`. The ComfyUI workflow JSON files are in `workflows/`. Hugging Face assets use the repository name in `repo`; CivitAI assets use a CivitAI download URL in `repo` and should provide the destination filename in `file`.
-
-Custom nodes can also be installed through the same manifest flow. Use `type: custom_node` and a git URL in `repo`:
+Workflow manifests live in `workflow-scripts/<name>/manifest.yaml`. A workflow
+contains asset names, not duplicated asset definitions:
 
 ```yaml
-name: qwen3-tts
+name: minimax-h3
+description: MiniMax H3 text-to-video workflow with Pixaroma nodes
 
-description: Qwen3-TTS custom nodes
+models:
+  - minimax-h3-diffusion
+  - qwen3vl-32b-minimax-h3
 
-assets:
-  - name: qwen3-tts
-    type: custom_node
-    provider: git
-    repo: https://github.com/flybirdxx/ComfyUI-Qwen-TTS.git
-    check: ComfyUI-Qwen-TTS
-
-  - name: comfyui-easy-use
-    type: custom_node
-    provider: git
-    repo: https://github.com/yolain/ComfyUI-Easy-Use.git
-    check: ComfyUI-Easy-Use
+custom_nodes:
+  - comfyui-pixaroma
 ```
 
-The installer clones each repo into `COMFY_HOME/custom_nodes` and skips it if the target folder already exists. This makes it easy to add custom-node workflows alongside the existing model bootstrap logic.
+## Models
+
+Reusable model definitions live in `assets/models.yaml`. List models with their
+copyable install commands:
+
+```sh
+./workflow list-models
+./workflow list-model
+./workflow list models
+```
+
+Each entry is printed beside a command in this form:
+
+```text
+dreamshaper-xl    ./workflow install-model dreamshaper-xl
+```
+
+Install one model without installing a complete workflow:
+
+```sh
+./workflow install-model dreamshaper-xl
+```
+
+The generic equivalent is:
+
+```sh
+./workflow install model dreamshaper-xl
+```
+
+Each model entry identifies its provider, repository, destination directory,
+and installed-file check:
+
+```yaml
+models:
+  - name: dreamshaper-xl
+    type: model
+    provider: huggingface
+    repo: Lykon/DreamShaper
+    file: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
+    destination: checkpoints
+    check: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
+```
+
+Hugging Face entries use `repo` as the repository name. CivitAI entries use a
+download URL in `repo` and should provide the destination filename in `file`.
+
+## Custom nodes
+
+List reusable custom nodes with their copyable install commands:
+
+```sh
+./workflow list-custom-nodes
+./workflow list-nodes
+./workflow list custom_nodes
+```
+
+Each entry is printed beside a command in this form:
+
+```text
+comfyui-pixaroma    ./workflow install-node comfyui-pixaroma
+```
+
+Install one custom node:
+
+```sh
+./workflow install-node comfyui-pixaroma
+```
+
+The generic equivalent is:
+
+```sh
+./workflow install custom_node comfyui-pixaroma
+```
+
+Custom-node definitions live in `assets/custom_nodes.yaml` and use Git
+repositories:
+
+```yaml
+custom_nodes:
+  - name: comfyui-pixaroma
+    type: custom_node
+    provider: git
+    repo: https://github.com/pixaroma/ComfyUI-Pixaroma.git
+    check: ComfyUI-Pixaroma
+```
+
+Repositories are cloned into `COMFY_HOME/custom_nodes`. Existing target
+directories are skipped.
+
+## Repository layout
+
+```text
+assets/
+  models.yaml
+  custom_nodes.yaml
+workflow-scripts/
+  <workflow>/manifest.yaml
+workflows/
+  ComfyUI workflow JSON files
+scripts/install.sh
+workflow
+```

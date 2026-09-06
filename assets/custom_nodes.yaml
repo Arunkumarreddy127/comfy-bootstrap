@@ -1,0 +1,21 @@
+custom_nodes:
+  - name: comfyui-pixaroma
+    type: custom_node
+    provider: git
+    repo: https://github.com/pixaroma/ComfyUI-Pixaroma.git
+    check: ComfyUI-Pixaroma
+  - name: qwen3-tts
+    type: custom_node
+    provider: git
+    repo: https://github.com/flybirdxx/ComfyUI-Qwen-TTS.git
+    check: ComfyUI-Qwen-TTS
+  - name: comfyui-easy-use
+    type: custom_node
+    provider: git
+    repo: https://github.com/yolain/ComfyUI-Easy-Use.git
+    check: ComfyUI-Easy-Use
+  - name: comfyui-layerstyle
+    type: custom_node
+    provider: git
+    repo: https://github.com/chflame163/ComfyUI_LayerStyle.git
+    check: ComfyUI_LayerStyle

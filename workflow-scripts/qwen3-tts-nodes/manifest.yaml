@@ -2,21 +2,7 @@ name: qwen3-tts-nodes
 
 description: Qwen3 TTS custom nodes for voice synthesis, voice design, and dialogue workflows
 
-assets:
-  - name: qwen3-tts
-    type: custom_node
-    provider: git
-    repo: https://github.com/flybirdxx/ComfyUI-Qwen-TTS.git
-    check: ComfyUI-Qwen-TTS
-
-  - name: comfyui-easy-use
-    type: custom_node
-    provider: git
-    repo: https://github.com/yolain/ComfyUI-Easy-Use.git
-    check: ComfyUI-Easy-Use
-
-  - name: comfyui-layerstyle
-    type: custom_node
-    provider: git
-    repo: https://github.com/chflame163/ComfyUI_LayerStyle.git
-    check: ComfyUI_LayerStyle
+custom_nodes:
+  - qwen3-tts
+  - comfyui-easy-use
+  - comfyui-layerstyle

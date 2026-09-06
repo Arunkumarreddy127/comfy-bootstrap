@@ -30,6 +30,10 @@ fi
 COMFY_HOME="${COMFY_HOME:-/workspace/runpod-slim/ComfyUI}"
 
 MANIFEST="${1:-}"
+ASSET_TYPE="${2:-workflow}"
+ASSET_NAME="${3:-}"
+MODELS_CATALOG="${MODELS_CATALOG:-$REPO_ROOT/assets/models.yaml}"
+CUSTOM_NODES_CATALOG="${CUSTOM_NODES_CATALOG:-$REPO_ROOT/assets/custom_nodes.yaml}"
 
 if [ -z "$MANIFEST" ]; then
     echo "ERROR: Manifest is required."
@@ -41,12 +45,25 @@ if [ ! -f "$MANIFEST" ]; then
     exit 1
 fi
 
+if [ ! -f "$MODELS_CATALOG" ]; then
+    echo "ERROR: Model catalog not found: $MODELS_CATALOG"
+    exit 1
+fi
+
+if [ ! -f "$CUSTOM_NODES_CATALOG" ]; then
+    echo "ERROR: Custom-node catalog not found: $CUSTOM_NODES_CATALOG"
+    exit 1
+fi
+
 echo
 echo "========================================"
-echo " Installing workflow"
+echo " Installing assets"
 echo "========================================"
 echo "ComfyUI: $COMFY_HOME"
 echo "Manifest: $MANIFEST"
+if [ "$ASSET_TYPE" != "workflow" ]; then
+    echo "Asset:    $ASSET_NAME ($ASSET_TYPE)"
+fi
 echo
 
 # --------------------------------------------------
@@ -65,8 +82,17 @@ fi
 # Read workflow
 # --------------------------------------------------
 
-WORKFLOW_NAME=$(yq -r '.name' "$MANIFEST")
-WORKFLOW_DESCRIPTION=$(yq -r '.description // ""' "$MANIFEST")
+if [ "$ASSET_TYPE" = "workflow" ]; then
+    WORKFLOW_NAME=$(yq -r '.name' "$MANIFEST")
+    WORKFLOW_DESCRIPTION=$(yq -r '.description // ""' "$MANIFEST")
+else
+    if [ -z "$ASSET_NAME" ]; then
+        echo "ERROR: Asset name is required."
+        exit 1
+    fi
+    WORKFLOW_NAME="$ASSET_NAME"
+    WORKFLOW_DESCRIPTION=""
+fi
 
 echo "Workflow: $WORKFLOW_NAME"
 
@@ -113,18 +139,23 @@ install_custom_node() {
     echo "✓ Custom node installed"
 }
 
-ASSET_COUNT=$(yq '.assets | length' "$MANIFEST")
+install_asset() {
+    local source_manifest="$1"
+    local asset_path="$2"
+    local NAME TYPE PROVIDER REPO DESTINATION CHECK FILE OUTPUT
 
-for ((i=0; i<ASSET_COUNT; i++)); do
-
-    NAME=$(yq -r ".assets[$i].name" "$MANIFEST")
-    TYPE=$(yq -r ".assets[$i].type" "$MANIFEST")
-    PROVIDER=$(yq -r ".assets[$i].provider" "$MANIFEST")
-    REPO=$(yq -r ".assets[$i].repo" "$MANIFEST")
-    DESTINATION=$(yq -r ".assets[$i].destination" "$MANIFEST")
-    CHECK=$(yq -r ".assets[$i].check" "$MANIFEST")
-    FILE=$(yq -r ".assets[$i].file // \"\"" "$MANIFEST")
-    OUTPUT=$(yq -r ".assets[$i].output // \"\"" "$MANIFEST")
+    NAME=$(yq -r "$asset_path | .name // \"\"" "$source_manifest")
+    if [ -z "$NAME" ]; then
+        echo "ERROR: Asset was not found in catalog."
+        exit 1
+    fi
+    TYPE=$(yq -r "$asset_path | .type" "$source_manifest")
+    PROVIDER=$(yq -r "$asset_path | .provider" "$source_manifest")
+    REPO=$(yq -r "$asset_path | .repo" "$source_manifest")
+    DESTINATION=$(yq -r "$asset_path | .destination // \"\"" "$source_manifest")
+    CHECK=$(yq -r "$asset_path | .check // \"\"" "$source_manifest")
+    FILE=$(yq -r "$asset_path | .file // \"\"" "$source_manifest")
+    OUTPUT=$(yq -r "$asset_path | .output // \"\"" "$source_manifest")
 
     MODEL_DIR="$COMFY_HOME/models/$DESTINATION"
     CHECK_FILE="$MODEL_DIR/$CHECK"
@@ -144,11 +175,11 @@ for ((i=0; i<ASSET_COUNT; i++)); do
         if [ -d "$COMFY_HOME/custom_nodes/$TARGET_NAME" ]; then
             echo "✓ Already exists"
             echo
-            continue
+            return 0
         fi
         install_custom_node "$REPO" "$TARGET_NAME"
         echo
-        continue
+        return 0
     fi
 
     mkdir -p "$MODEL_DIR"
@@ -160,7 +191,7 @@ for ((i=0; i<ASSET_COUNT; i++)); do
     if [ -f "$CHECK_FILE" ]; then
         echo "✓ Already exists"
         echo
-        continue
+        return 0
     fi
 
     case "$PROVIDER" in
@@ -239,8 +270,37 @@ for ((i=0; i<ASSET_COUNT; i++)); do
 
         ;;
     esac
+}
 
-done
+if [ "$ASSET_TYPE" = "workflow" ]; then
+    for TYPE in models custom_nodes; do
+        if [ "$TYPE" = "models" ]; then
+            SOURCE_CATALOG="$MODELS_CATALOG"
+        else
+            SOURCE_CATALOG="$CUSTOM_NODES_CATALOG"
+        fi
+        while IFS= read -r ASSET_NAME; do
+            [ -z "$ASSET_NAME" ] && continue
+            install_asset "$SOURCE_CATALOG" ".${TYPE}[] | select(.name == \"$ASSET_NAME\")"
+        done < <(yq -r ".${TYPE}[]? // empty" "$MANIFEST")
+    done
+else
+    case "$ASSET_TYPE" in
+        model|models)
+            SOURCE_CATALOG="$MODELS_CATALOG"
+            ASSET_PATH=".models[] | select(.name == \"$ASSET_NAME\")"
+            ;;
+        custom_node|custom_nodes|node)
+            SOURCE_CATALOG="$CUSTOM_NODES_CATALOG"
+            ASSET_PATH=".custom_nodes[] | select(.name == \"$ASSET_NAME\")"
+            ;;
+        *)
+            echo "ERROR: Unsupported asset type: $ASSET_TYPE"
+            exit 1
+            ;;
+    esac
+    install_asset "$SOURCE_CATALOG" "$ASSET_PATH"
+fi
 
 echo "========================================"
 echo " Workflow installation complete"
