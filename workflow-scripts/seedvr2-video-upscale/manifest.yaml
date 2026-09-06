@@ -1,0 +1,10 @@
+name: seedvr2-video-upscale
+
+description: SeedVR2 3B FP16 video upscaling workflow
+
+models:
+  - seedvr2-3b-fp16
+  - seedvr2-vae-fp16
+
+custom_nodes:
+  - comfyui-seedvr2-video-upscaler

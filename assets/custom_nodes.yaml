@@ -19,3 +19,8 @@ custom_nodes:
     provider: git
     repo: https://github.com/chflame163/ComfyUI_LayerStyle.git
     check: ComfyUI_LayerStyle
+  - name: comfyui-seedvr2-video-upscaler
+    type: custom_node
+    provider: git
+    repo: https://github.com/AInVFX/ComfyUI-SeedVR2_VideoUpscaler.git
+    check: ComfyUI-SeedVR2_VideoUpscaler
