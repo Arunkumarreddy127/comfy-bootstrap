@@ -44,6 +44,14 @@ models:
     output: minimax_h3_fl2va_pruned_int8_convrot.safetensors
     destination: diffusion_models/h3
     check: minimax_h3_fl2va_pruned_int8_convrot.safetensors
+  - name: minimax-h3-ref2va-diffusion
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/MiniMax-H3
+    file: diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors
+    output: minimax_h3_ref2va_pruned_int8_convrot.safetensors
+    destination: diffusion_models/h3
+    check: minimax_h3_ref2va_pruned_int8_convrot.safetensors
   - name: qwen3vl-32b-minimax-h3
     type: model
     provider: huggingface
