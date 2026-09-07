@@ -23,9 +23,12 @@ set_comfy_home() {
         runpod)
             comfy_home="/workspace/runpod-slim/ComfyUI"
             ;;
+        vastai)
+            comfy_home="/workspace/ComfyUI"
+            ;;
         *)
             echo "ERROR: Unknown target '$target'."
-            echo "Choose one of: local, contabo, runpod"
+            echo "Choose one of: local, contabo, runpod, vastai"
             exit 1
             ;;
     esac
@@ -89,7 +92,7 @@ case "$COMMAND" in
 
         if [ -z "$WORKFLOW_NAME" ]; then
             echo "Usage:"
-            echo "  ./workflow set local|contabo|runpod"
+            echo "  ./workflow set local|contabo|runpod|vastai"
             exit 1
         fi
 
@@ -205,7 +208,7 @@ case "$COMMAND" in
         echo "Usage:"
         echo
         echo "  ./workflow setup"
-        echo "  ./workflow set local|contabo|runpod"
+        echo "  ./workflow set local|contabo|runpod|vastai"
         echo "  ./workflow install <workflow>"
         echo "  ./workflow install-model <model>"
         echo "  ./workflow install-node <custom-node>"

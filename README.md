@@ -38,6 +38,7 @@ Choose where assets should be installed:
 ./workflow set local
 ./workflow set contabo
 ./workflow set runpod
+./workflow set vastai
 ```
 
 The target paths are:
@@ -47,6 +48,7 @@ The target paths are:
 | `local`   | `/test-downloads`                |
 | `contabo` | `/root/contabo/ComfyUI`          |
 | `runpod`  | `/workspace/runpod-slim/ComfyUI` |
+| `vastai`  | `/workspace/ComfyUI`             |
 
 The selected value is saved in `.env` and used by later installs.
 
