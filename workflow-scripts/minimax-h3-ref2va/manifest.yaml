@@ -1,0 +1,12 @@
+name: minimax-h3-ref2va
+
+description: MiniMax H3 reference-to-video workflow with Pixaroma nodes
+
+models:
+  - minimax-h3-ref2va-diffusion
+  - qwen3vl-32b-minimax-h3
+  - minimax-h3-video-vae
+  - minimax-h3-audio-vae
+
+custom_nodes:
+  - comfyui-pixaroma
