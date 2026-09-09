@@ -23,6 +23,29 @@ models:
     output: qwen_image_vae.safetensors
     destination: vae
     check: qwen_image_vae.safetensors
+  - name: qwen-image-edit-diffusion
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Qwen-Image-Edit_ComfyUI
+    file: split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors
+    output: qwen_image_edit_fp8_e4m3fn.safetensors
+    destination: diffusion_models
+    check: qwen_image_edit_fp8_e4m3fn.safetensors
+  - name: qwen-2.5-vl-7b-fp8-scaled
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Qwen-Image_ComfyUI
+    file: split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+    output: qwen_2.5_vl_7b_fp8_scaled.safetensors
+    destination: text_encoders
+    check: qwen_2.5_vl_7b_fp8_scaled.safetensors
+  - name: qwen-image-edit-lightning
+    type: lora
+    provider: huggingface
+    repo: lightx2v/Qwen-Image-Lightning
+    file: Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors
+    destination: loras
+    check: Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors
   - name: qwen2.5-coder-14b
     type: model
     provider: huggingface

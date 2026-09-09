@@ -1,0 +1,9 @@
+name: qwen-image-edit
+
+description: Qwen Image Edit workflow with Lightning LoRA
+
+models:
+  - qwen-image-edit-diffusion
+  - qwen-2.5-vl-7b-fp8-scaled
+  - qwen-image-vae
+  - qwen-image-edit-lightning
