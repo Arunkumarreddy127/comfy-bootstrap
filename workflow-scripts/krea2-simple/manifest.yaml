@@ -1,0 +1,11 @@
+name: krea2-simple
+
+description: Krea 2 Turbo simple text-to-image workflow
+
+models:
+  - krea2-turbo-fp8
+  - krea2-qwen3vl-4b
+  - qwen-image-vae
+
+custom_nodes:
+  - comfyui-krea2t-enhancer

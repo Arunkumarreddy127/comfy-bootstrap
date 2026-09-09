@@ -23,6 +23,22 @@ models:
     output: qwen_image_vae.safetensors
     destination: vae
     check: qwen_image_vae.safetensors
+  - name: krea2-turbo-fp8
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Krea-2
+    file: diffusion_models/krea2_turbo_fp8_scaled.safetensors
+    output: krea2_turbo_fp8_scaled.safetensors
+    destination: diffusion_models/krea2
+    check: krea2_turbo_fp8_scaled.safetensors
+  - name: krea2-qwen3vl-4b
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Krea-2
+    file: text_encoders/qwen3vl_4b_fp8_scaled.safetensors
+    output: qwen3vl_4b_fp8_scaled.safetensors
+    destination: text_encoders
+    check: qwen3vl_4b_fp8_scaled.safetensors
   - name: qwen-image-edit-diffusion
     type: model
     provider: huggingface

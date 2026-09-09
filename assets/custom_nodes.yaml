@@ -24,3 +24,8 @@ custom_nodes:
     provider: git
     repo: https://github.com/AInVFX/ComfyUI-SeedVR2_VideoUpscaler.git
     check: ComfyUI-SeedVR2_VideoUpscaler
+  - name: comfyui-krea2t-enhancer
+    type: custom_node
+    provider: git
+    repo: https://github.com/capitan01R/ComfyUI-Krea2T-Enhancer.git
+    check: ComfyUI-Krea2T-Enhancer
