@@ -135,6 +135,36 @@ models:
     file: pixag1rlwh1t3.safetensors
     destination: loras/zimage
     check: pixag1rlwh1t3.safetensors
+  - name: z-image-turbo-fp8-scaled-e5m2-kj
+    type: model
+    provider: huggingface
+    repo: Kijai/Z-Image_comfy_fp8_scaled
+    file: z-image-turbo_fp8_scaled_e5m2_KJ.safetensors
+    destination: diffusion_models/z-image
+    check: z-image-turbo_fp8_scaled_e5m2_KJ.safetensors
+  - name: z-image-qwen-3-4b-fp8-mixed
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/z_image_turbo
+    file: split_files/text_encoders/qwen_3_4b_fp8_mixed.safetensors
+    output: qwen_3_4b_fp8_mixed.safetensors
+    destination: text_encoders
+    check: qwen_3_4b_fp8_mixed.safetensors
+  - name: z-image-ae-vae
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/z_image_turbo
+    file: split_files/vae/ae.safetensors
+    output: ae.safetensors
+    destination: vae
+    check: ae.safetensors
+  - name: 4x-nmkd-siax-200k
+    type: upscale_model
+    provider: huggingface
+    repo: Akumetsu971/SD_Anime_Futuristic_Armor
+    file: 4x_NMKD-Siax_200k.pth
+    destination: upscale_models
+    check: 4x_NMKD-Siax_200k.pth
   - name: flux-2-klein-9b-kv-fp8
     type: model
     provider: huggingface

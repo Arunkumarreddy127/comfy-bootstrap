@@ -1,0 +1,9 @@
+name: z-image-upscaler
+
+description: Z-Image Turbo FP8 text-to-image workflow with tiled diffusion and upscaling
+
+models:
+  - z-image-turbo-fp8-scaled-e5m2-kj
+  - z-image-qwen-3-4b-fp8-mixed
+  - z-image-ae-vae
+  - 4x-nmkd-siax-200k
