@@ -1,0 +1,6 @@
+name: z-image-turbo-fp8-aio
+
+description: Z-Image Turbo FP8 AIO checkpoint for text-to-image generation
+
+models:
+  - z-image-turbo-fp8-aio
