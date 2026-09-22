@@ -126,7 +126,7 @@ models:
     provider: huggingface
     repo: SeeSee21/Z-Image-Turbo-AIO
     file: z-image-turbo-fp8-aio.safetensors
-    destination: checkpoints/z-image
+    destination: checkpoints
     check: z-image-turbo-fp8-aio.safetensors
   - name: pixag1rlwh1t3
     type: lora
