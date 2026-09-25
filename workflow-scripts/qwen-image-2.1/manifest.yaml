@@ -1,0 +1,8 @@
+name: qwen-image-2.1
+
+description: Qwen Image 2.1 text-to-image workflow
+
+models:
+  - qwen-image-2.1-int8-convrot
+  - qwen3vl-8b-int8-convrot
+  - qwen-image-2.1-vae

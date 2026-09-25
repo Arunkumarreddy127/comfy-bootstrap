@@ -62,6 +62,30 @@ models:
     file: Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors
     destination: loras
     check: Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors
+  - name: qwen-image-2.1-int8-convrot
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: diffusion_models/qwen_image_2.1_int8_convrot.safetensors
+    output: qwen_image_2.1_int8_convrot.safetensors
+    destination: diffusion_models
+    check: qwen_image_2.1_int8_convrot.safetensors
+  - name: qwen3vl-8b-int8-convrot
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: text_encoders/qwen3vl_8b_int8_convrot.safetensors
+    output: qwen3vl_8b_int8_convrot.safetensors
+    destination: text_encoders
+    check: qwen3vl_8b_int8_convrot.safetensors
+  - name: qwen-image-2.1-vae
+    type: model
+    provider: huggingface
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: vae/qwen_image_2.1_vae_bf16.safetensors
+    output: qwen_image_2.1_vae_bf16.safetensors
+    destination: vae
+    check: qwen_image_2.1_vae_bf16.safetensors
   - name: qwen2.5-coder-14b
     type: model
     provider: huggingface
