@@ -111,7 +111,7 @@ models:
     repo: Comfy-Org/MiniMax-H3
     file: diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors
     output: minimax_h3_fl2va_pruned_int8_convrot.safetensors
-    destination: diffusion_models/h3
+    destination: diffusion_models
     check: minimax_h3_fl2va_pruned_int8_convrot.safetensors
   - name: minimax-h3-ref2va-diffusion
     type: model
@@ -119,7 +119,7 @@ models:
     repo: Comfy-Org/MiniMax-H3
     file: diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors
     output: minimax_h3_ref2va_pruned_int8_convrot.safetensors
-    destination: diffusion_models/h3
+    destination: diffusion_models
     check: minimax_h3_ref2va_pruned_int8_convrot.safetensors
   - name: qwen3vl-32b-minimax-h3
     type: model
