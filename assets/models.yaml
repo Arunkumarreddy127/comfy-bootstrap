@@ -219,13 +219,13 @@ models:
     file: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
     destination: checkpoints
     check: DreamShaperXL1.0Alpha2_fixedVae_half_00001_.safetensors
-  - name: seedvr2-3b-fp16
+  - name: seedvr2-7b-fp16
     type: model
     provider: huggingface
     repo: numz/SeedVR2_comfyUI
-    file: seedvr2_ema_3b_fp16.safetensors
+    file: seedvr2_ema_7b_fp16.safetensors
     destination: SEEDVR2
-    check: seedvr2_ema_3b_fp16.safetensors
+    check: seedvr2_ema_7b_fp16.safetensors
   - name: seedvr2-vae-fp16
     type: model
     provider: huggingface
