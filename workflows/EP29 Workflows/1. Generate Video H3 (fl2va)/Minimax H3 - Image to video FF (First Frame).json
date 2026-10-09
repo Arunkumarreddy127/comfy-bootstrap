@@ -142,7 +142,7 @@
         "Node name for S&R": "UNETLoader"
       },
       "widgets_values": [
-        "h3\\minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+        "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
         "default"
       ],
       "color": "#f66744",
